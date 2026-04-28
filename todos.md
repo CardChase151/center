@@ -117,15 +117,21 @@ On Publish:
    └─ Optional: auto-post snippet to Instagram/Facebook
 ```
 
-### Toggle Logic (the crucial part)
+### Three States: Approve, Hold, Decline
 
-| Pastor's action | Result |
-|---|---|
-| Doesn't touch portal | Default toggle = YES → auto-publishes ~48 hrs after draft created (Wednesday morning) |
-| Edits text only | Edits saved, toggle stays YES → publishes Wednesday with edits |
-| Flips toggle to NO | Draft is held, never publishes, sits in portal indefinitely |
-| Flips toggle back to YES later | Publishes immediately (within ~5 minutes) |
-| Misses 4 weekends in a row | 4 drafts pile up in "pending" state. He comes through, edits all 4, flips each toggle to YES → all 4 publish chronologically with ~5 min spacing. Routine stays intact. |
+Each draft has one of three states. Pastor switches between them with a single click in the portal.
+
+| State | What it means | Behavior |
+|---|---|---|
+| **Pending (default)** | Untouched draft, auto-approved | Auto-publishes ~48 hrs after creation (Wednesday morning) unless flipped to Hold or Decline |
+| **Held** | "Not ready, come back later" | Sits in the queue indefinitely. No publish, no email. Pastor can flip back to Pending → publishes immediately |
+| **Declined** | "This one's not going out — sermon didn't go well, or off-message" | Permanently skipped. Hidden from active queue (still archived in Supabase for record). No publish, no email, ever |
+
+### Common workflows
+- **Normal week:** ignore the portal entirely → posts go out Wednesday automatically
+- **Need more time:** flip to Hold → comes back to it later, flips to Pending → publishes within minutes
+- **Skip this week:** flip to Decline → done, moves on
+- **Backed up:** 4 weeks missed, comes through and triages — Approve some, Decline others, Hold the ones still being edited. Approved ones publish chronologically with ~5-min spacing. Routine stays intact.
 
 ### Why This Design Works
 - **Zero-touch is the happy path.** Pastor ignores the system entirely → posts still go out. SEO + email engine keeps humming.
@@ -291,3 +297,135 @@ A member can sign up with an email, log in, and use the site as a personal compa
 - Prayer journal "share with pastor" — yes or hold? (Adds inbox-management work for Pastor Perez.)
 - Free for everyone, or potentially gated for members who give? (Most churches default fully free — recommend that.)
 - Mobile push notifications — Capacitor wrap later, or web push via OneSignal for now?
+
+---
+
+## TODO 7 — Admin Portal + Staff Accounts
+
+The single backend home for everything in TODOs 8–11. Built once, panels added as we go.
+
+### Foundation
+- `/admin` route, gated by Supabase Auth + role check
+- Roles: `pastor`, `admin`, `staff`, `member` (default)
+- Sidebar nav linking to each admin panel (sermons, calendar, banner, push, resources, team)
+- Activity log table — every admin action recorded for accountability
+
+### Staff Accounts
+- `/admin/team` — pastor or admin can invite new staff by email, assign role, revoke access
+- Roles control which panels each person can see and use
+- Lets Pastor Perez delegate (e.g. an admin handles calendar, the worship lead handles push, etc.)
+
+---
+
+## TODO 8 — Public Events Calendar
+
+Visible to everyone (visitors and members). Admin-managed.
+
+### Public side
+- `/calendar` — month, week, and list views
+- Mobile-friendly
+- Click event → detail with description, location, image, optional RSVP link
+- Filter by category: Service, Youth, Outreach, Special
+
+### Admin side
+- `/admin/calendar` — add, edit, delete, recur
+- Recurring events (Sunday service, Tuesday prayer, etc.)
+- Featured events flagged visually (Christmas Eve, Easter, summer kickoff)
+
+### Tech
+- Supabase `events` table: title, description, image, start/end, category, is_featured, recurrence_rule
+- iCal export per event ("add to my calendar")
+
+---
+
+## TODO 9 — Editable Home Banner
+
+A toggleable promo strip near the top of the homepage. Off by default.
+
+### Admin side
+- `/admin/banner` — toggle on/off, edit headline + sub + CTA link, preview
+- Optional auto-disable date
+
+### Public side
+- When on, banner sits above the hero, dark with gold accent, dismissible per visitor
+
+---
+
+## TODO 10 — Push Notification System (OneSignal)
+
+OneSignal-powered. Used by both the future mobile app and (optionally) browser web push.
+
+### Three modes
+- **One-off:** type message, send now
+- **Scheduled:** pick a future date/time, fires automatically
+- **Routine templates:** pre-built messages (Sunday service reminder, midweek prayer) — one tap to send
+
+### Campaigns (the bigger feature)
+- Admin creates a campaign with a name + end date (e.g. "Christmas Buildup", ends Dec 25)
+- System asks how many notifications, then prompts for title + body for each
+- Admin sets the spacing (one per day, or custom dates)
+- Hit Go — entire schedule queues up
+- Any individual notification can be edited or canceled before it fires
+
+### Tech
+- OneSignal SDK for delivery
+- Supabase tables: `notifications`, `campaigns`
+- Edge function or cron fires scheduled sends on time
+- Audience segments: all, app-only, web-only, members-only
+
+---
+
+## TODO 11 — Resource Library (Devotionals, PDFs, Word Docs)
+
+Admin uploads downloadable materials. Members browse and read or download.
+
+### Admin side
+- `/admin/resources` — upload PDFs, Word docs, or write devotionals (markdown editor)
+- Add title, description, category, optional cover image
+- Toggle published / draft
+
+### Member side
+- `/library` (web) and a matching screen in the app
+- Searchable, filterable list with cover thumbs
+- Click → reader view (rendered devotional or downloadable file)
+- Logged-in members can favorite resources (ties into TODO 6)
+
+### Tech
+- Supabase Storage for files
+- `resources` table for metadata
+- PDF text extraction for searchability — optional later
+
+---
+
+## TODO 12 — Mobile App (separate UI, shared backend)
+
+Native iOS + Android apps with their own UI. Not a webview wrap.
+
+### Scope
+- Capacitor wrap of a separate React build
+- App-first navigation (bottom tab bar, native gestures)
+- App-only emphasis: sermon player, push, prayer journal, daily devotional, give
+- Web stays focused on visitors and seekers; app stays focused on the church family
+
+### Tech
+- New `/app` folder or sibling repo with separate Vite build
+- Same Supabase URL + keys as the website (shared data)
+- OneSignal SDK for push
+- App Store + Google Play submission via fastlane (Chase's existing pipeline)
+
+---
+
+## TODO 13 — Future: Direct Stripe Giving (replaces Planning Center)
+
+Eventual replacement for the Planning Center deep-link.
+
+### Why later
+- Planning Center already handles taxes, receipts, recurring billing for nonprofits
+- Going direct via Stripe means we own the UX but inherit tax-receipt + 501(c)(3) compliance work
+- Save until the church has bandwidth and there's a clear UX gain
+
+### When we do it
+- Stripe Checkout (recurring + one-time)
+- Auto-issue tax receipt emails
+- Year-end giving statements
+- Migrate or keep export of existing Planning Center records
