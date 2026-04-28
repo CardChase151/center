@@ -14,6 +14,8 @@ import Echariria from './pages/Echariria'
 import Missions from './pages/Missions'
 import Watch from './pages/Watch'
 import Contact from './pages/Contact'
+import Pray from './pages/Pray'
+import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -35,6 +37,8 @@ export default function App() {
           <Route path="/missions"  element={<Missions />} />
           <Route path="/watch"     element={<Watch />} />
           <Route path="/contact"   element={<Contact />} />
+          <Route path="/pray"      element={<Pray />} />
+          <Route path="/login"     element={<Login />} />
           <Route path="*"          element={<NotFound />} />
         </Routes>
       </AnimatePresence>

@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Radio } from 'lucide-react'
+import { Menu, X, Radio, User } from 'lucide-react'
 import clsx from 'clsx'
 import { site } from '../lib/site'
 
 const links = [
+  { to: '/',          label: 'Home' },
   { to: '/about',     label: 'About' },
   { to: '/visit',     label: 'Visit' },
   { to: '/serve',     label: 'Serve' },
   { to: '/echariria', label: 'Echariria' },
   { to: '/watch',     label: 'Watch' },
+  { to: '/give',      label: 'Give' },
 ]
 
 function isLiveNow() {
@@ -53,11 +55,12 @@ export default function Nav() {
             <img src="/images/logo.png" alt="Center Church" className="h-9 md:h-10 w-auto" />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-7">
             {links.map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
+                end={l.to === '/'}
                 className={({ isActive }) =>
                   clsx(
                     'text-sm tracking-widest2 uppercase transition-colors',
@@ -82,9 +85,9 @@ export default function Nav() {
                 Live
               </a>
             )}
-            <a href={site.links.give} target="_blank" rel="noreferrer" className="btn-primary text-sm">
-              Give
-            </a>
+            <Link to="/login" className="btn-primary text-sm">
+              <User size={14} /> Log In
+            </Link>
           </nav>
 
           <button
@@ -120,6 +123,7 @@ export default function Nav() {
                   <NavLink
                     key={l.to}
                     to={l.to}
+                    end={l.to === '/'}
                     className={({ isActive }) =>
                       clsx(
                         'display text-3xl px-4 py-3 rounded-xl transition-colors',
@@ -131,7 +135,9 @@ export default function Nav() {
                   </NavLink>
                 ))}
                 <div className="flex flex-col gap-2 px-1 pt-4 mt-3 border-t border-bone-50/10">
-                  <a href={site.links.give} target="_blank" rel="noreferrer" className="btn-primary justify-center">Give</a>
+                  <Link to="/login" className="btn-primary justify-center">
+                    <User size={16} /> Log In
+                  </Link>
                   {live && (
                     <a href={site.links.livestream} target="_blank" rel="noreferrer" className="btn-ghost justify-center">
                       <Radio size={16} /> Watch Live Now

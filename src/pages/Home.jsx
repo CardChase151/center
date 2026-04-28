@@ -140,7 +140,7 @@ export default function Home() {
             {[
               { icon: Heart,         to: '/visit',  title: "I'm new",        body: "We'll save you a seat. Sundays, casual, ~75 min.", img: '/images/what-to-expect.webp' },
               { icon: HandHelping,   to: '/serve',  title: 'I want to serve', body: 'Pour into others through one of six teams.',       img: '/images/hospitality.webp' },
-              { icon: MessageSquare, to: '/contact',title: 'I need prayer',   body: "We'd love to pray with you, today.",               img: '/images/worship.webp' },
+              { icon: MessageSquare, to: '/pray',   title: 'I need prayer',   body: "We'd love to pray with you, today.",               img: '/images/worship.webp' },
             ].map(({ icon: Icon, ...c }) => (
               <motion.div key={c.title} variants={itemVariants}>
                 <Link to={c.to} className="group block relative h-[420px] overflow-hidden rounded-sm">

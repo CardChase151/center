@@ -31,6 +31,7 @@ export default function Footer() {
               <li><Link to="/visit" className="hover:text-bone-50">Plan a Visit</Link></li>
               <li><Link to="/kids" className="hover:text-bone-50">Center Kids</Link></li>
               <li><Link to="/serve" className="hover:text-bone-50">Serve</Link></li>
+              <li><Link to="/pray" className="hover:text-bone-50">Pray</Link></li>
               <li><Link to="/missions" className="hover:text-bone-50">Missions</Link></li>
               <li><Link to="/watch" className="hover:text-bone-50">Watch</Link></li>
             </ul>
@@ -39,9 +40,10 @@ export default function Footer() {
           <div className="md:col-span-2">
             <p className="eyebrow mb-5">Connect</p>
             <ul className="space-y-3 text-bone-50/80">
-              <li><a href={site.links.give} target="_blank" rel="noreferrer" className="hover:text-bone-50">Give</a></li>
+              <li><Link to="/give" className="hover:text-bone-50">Give</Link></li>
               <li><a href={site.links.livestream} target="_blank" rel="noreferrer" className="hover:text-bone-50">Live Stream</a></li>
-              <li><a href={site.links.planning} target="_blank" rel="noreferrer" className="hover:text-bone-50">Prayer Request</a></li>
+              <li><Link to="/contact" className="hover:text-bone-50">Prayer Request</Link></li>
+              <li><Link to="/login" className="hover:text-bone-50">Log In</Link></li>
             </ul>
             <div className="flex gap-3 mt-6">
               <a href={site.links.instagram} target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 rounded-full border border-bone-50/15 hover:border-bone-50/60 transition-colors"><Instagram size={16} /></a>
