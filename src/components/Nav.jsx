@@ -99,43 +99,48 @@ export default function Nav() {
 
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-ink-950/98 md:hidden pt-20"
-          >
-            <motion.nav
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col px-6 py-10 gap-1"
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 z-30 bg-ink-950/70 backdrop-blur-sm md:hidden"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-x-3 top-[4.25rem] z-40 bg-ink-950 md:hidden rounded-2xl border border-bone-50/10 shadow-2xl shadow-black/60 overflow-hidden"
             >
-              {links.map((l, i) => (
-                <NavLink
-                  key={l.to}
-                  to={l.to}
-                  className={({ isActive }) =>
-                    clsx(
-                      'display text-4xl py-3 border-b border-bone-50/5 transition-colors',
-                      isActive ? 'text-clay-400' : 'text-bone-50'
-                    )
-                  }
-                >
-                  {l.label}
-                </NavLink>
-              ))}
-              <div className="flex flex-col gap-3 pt-8">
-                <a href={site.links.give} className="btn-primary justify-center">Give</a>
-                {live && (
-                  <a href={site.links.livestream} target="_blank" rel="noreferrer" className="btn-ghost justify-center">
-                    <Radio size={16} /> Watch Live Now
-                  </a>
-                )}
-              </div>
-            </motion.nav>
-          </motion.div>
+              <nav className="flex flex-col p-3">
+                {links.map((l) => (
+                  <NavLink
+                    key={l.to}
+                    to={l.to}
+                    className={({ isActive }) =>
+                      clsx(
+                        'display text-3xl px-4 py-3 rounded-xl transition-colors',
+                        isActive ? 'text-clay-400 bg-bone-50/[0.06]' : 'text-bone-50 hover:bg-bone-50/[0.04]'
+                      )
+                    }
+                  >
+                    {l.label}
+                  </NavLink>
+                ))}
+                <div className="flex flex-col gap-2 px-1 pt-4 mt-3 border-t border-bone-50/10">
+                  <a href={site.links.give} target="_blank" rel="noreferrer" className="btn-primary justify-center">Give</a>
+                  {live && (
+                    <a href={site.links.livestream} target="_blank" rel="noreferrer" className="btn-ghost justify-center">
+                      <Radio size={16} /> Watch Live Now
+                    </a>
+                  )}
+                </div>
+              </nav>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

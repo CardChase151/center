@@ -80,18 +80,22 @@ export default function Home() {
             <p className="eyebrow">Seven Values</p>
             <h2 className="display text-4xl md:text-6xl mt-4 max-w-2xl">Inspired by the early church.</h2>
           </Reveal>
-          <RevealStagger className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-bone-50/5">
-            {values.map((v) => (
-              <motion.div
-                key={v.word}
-                variants={itemVariants}
-                className="bg-ink-900 p-8 md:p-10 hover:bg-ink-800 transition-colors duration-500"
-              >
-                <p className="text-gold-500 text-sm">{values.indexOf(v) + 1 < 10 ? '0' : ''}{values.indexOf(v) + 1}</p>
-                <p className="display text-3xl md:text-4xl mt-3">{v.word}</p>
-                <p className="mt-3 text-bone-50/60 text-sm leading-relaxed">{v.body}</p>
-              </motion.div>
-            ))}
+          <RevealStagger className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-px bg-bone-50/5">
+            {values.map((v, i) => {
+              const lgSpan = i < 4 ? 'lg:col-span-3' : 'lg:col-span-4'
+              const smSpan = i === values.length - 1 ? 'sm:col-span-2' : 'sm:col-span-1'
+              return (
+                <motion.div
+                  key={v.word}
+                  variants={itemVariants}
+                  className={`bg-ink-900 p-8 md:p-10 hover:bg-ink-800 transition-colors duration-500 ${smSpan} ${lgSpan}`}
+                >
+                  <p className="text-gold-500 text-sm">{i + 1 < 10 ? '0' : ''}{i + 1}</p>
+                  <p className="display text-3xl md:text-4xl mt-3">{v.word}</p>
+                  <p className="mt-3 text-bone-50/60 text-sm leading-relaxed">{v.body}</p>
+                </motion.div>
+              )
+            })}
           </RevealStagger>
         </div>
       </section>
@@ -136,7 +140,7 @@ export default function Home() {
             {[
               { icon: Heart,         to: '/visit',  title: "I'm new",        body: "We'll save you a seat. Sundays, casual, ~75 min.", img: '/images/what-to-expect.webp' },
               { icon: HandHelping,   to: '/serve',  title: 'I want to serve', body: 'Pour into others through one of six teams.',       img: '/images/hospitality.webp' },
-              { icon: MessageSquare, to: '/contact',title: 'I need prayer',   body: "We'd love to pray with you, today.",               img: '/images/all-ministry.webp' },
+              { icon: MessageSquare, to: '/contact',title: 'I need prayer',   body: "We'd love to pray with you, today.",               img: '/images/worship.webp' },
             ].map(({ icon: Icon, ...c }) => (
               <motion.div key={c.title} variants={itemVariants}>
                 <Link to={c.to} className="group block relative h-[420px] overflow-hidden rounded-sm">
@@ -181,7 +185,7 @@ export default function Home() {
           <Reveal className="md:col-span-5">
             <div className="grid grid-cols-2 gap-3">
               <div className="aspect-[3/4] overflow-hidden"><img src="/images/all-ministry.webp" alt="" className="w-full h-full object-cover" /></div>
-              <div className="aspect-[3/4] overflow-hidden mt-10"><img src="/images/youth.webp" alt="" className="w-full h-full object-cover" /></div>
+              <div className="aspect-[3/4] overflow-hidden mt-10"><img src="/images/kids-3.webp" alt="" className="w-full h-full object-cover" /></div>
             </div>
           </Reveal>
         </div>
