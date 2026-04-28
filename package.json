@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --port 3001 --host",
     "build": "vite build",
-    "preview": "vite preview --port 3001"
+    "preview": "vite preview --port 3001",
+    "og": "node scripts/generate-og.js"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -21,6 +22,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.17",
     "vite": "^5.4.11"
   }
