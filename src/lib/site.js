@@ -7,7 +7,7 @@ export const site = {
   phone: '978-717-5751',
   phoneHref: 'tel:+19787175751',
   email: 'office@centerchurchne.com',
-  serviceTime: 'Sundays at 10:30 AM',
+  serviceTime: 'Sundays at 10:00 AM',
   serviceLength: '~75 minutes',
   links: {
     give:        'https://centerchurchpeabody.churchcenter.com/giving',
