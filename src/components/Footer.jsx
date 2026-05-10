@@ -58,6 +58,9 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} Center Church. All rights reserved.</p>
           <p>{site.serviceTime} · {site.serviceLength}</p>
         </div>
+        <div className="mt-4 text-xs text-bone-50/30">
+          <p>Built by <a href="https://appcatalyst.org" target="_blank" rel="noopener" className="hover:text-bone-50/60">App Catalyst LLC</a></p>
+        </div>
       </div>
     </footer>
   )
